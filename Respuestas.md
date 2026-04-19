@@ -1,0 +1,150 @@
+# Respuestas — Práctica Final: Análisis y Modelado de Datos
+
+---
+
+# 🔵 Ejercicio 1 — Análisis Estadístico Descriptivo
+
+## Pregunta 1.1 — ¿De qué fuente proviene el dataset y cuál es la variable objetivo (target)? ¿Por qué tiene sentido hacer regresión sobre ella?
+
+El dataset utilizado proviene de una fuente pública (Kaggle) y contiene información sobre características técnicas de vehículos.
+
+La variable objetivo seleccionada es **price**, que representa el precio del vehículo.
+
+Tiene sentido aplicar regresión sobre esta variable ya que es una variable **numérica continua**, y su valor depende de múltiples factores como la potencia del motor, el tamaño, el peso o el tipo de vehículo. Por tanto, es adecuado modelar su comportamiento mediante técnicas de regresión.
+
+---
+
+## Pregunta 1.2 — ¿Qué distribución tienen las principales variables numéricas y has encontrado outliers? Indica en qué variables y qué has decidido hacer con ellos.
+
+Las variables numéricas presentan distribuciones variadas, en general con cierta asimetría hacia la derecha, especialmente en variables relacionadas con el precio o la potencia.
+
+Se han detectado outliers utilizando el método del rango intercuartílico (IQR), especialmente en variables como **price, horsepower y enginesize**.
+
+Estos outliers corresponden a vehículos de gama alta o características extremas, por lo que se ha decidido **no eliminarlos**, ya que representan valores reales del mercado y pueden aportar información relevante al modelo.
+
+---
+
+## Pregunta 1.3 — ¿Qué tres variables numéricas tienen mayor correlación (en valor absoluto) con la variable objetivo? Indica los coeficientes.
+
+Las variables con mayor correlación con la variable objetivo **price** son:
+
+* **enginesize** → alta correlación positiva
+* **curbweight** → alta correlación positiva
+* **horsepower** → alta correlación positiva
+
+Estas variables tienen una relación directa con el precio del vehículo, ya que reflejan características clave como la potencia, el tamaño y el peso.
+
+---
+
+## Pregunta 1.4 — ¿Hay valores nulos en el dataset? ¿Qué porcentaje representan y cómo los has tratado?
+
+Tras analizar el dataset, no se han encontrado valores nulos.
+
+* Total de valores nulos: 0
+* Porcentaje de valores nulos: 0%
+
+Por tanto, no ha sido necesario aplicar ningún tratamiento adicional sobre los datos.
+
+---
+
+# 🟢 Ejercicio 2 — Inferencia con Scikit-Learn
+
+## Pregunta 2.1 — Indica los valores de MAE, RMSE y R² de la regresión lineal sobre el test set. ¿El modelo funciona bien? ¿Por qué?
+
+El modelo de regresión lineal ha obtenido los siguientes resultados sobre el conjunto de test:
+
+* MAE: 2222.58
+* RMSE: 3142.49
+* R²: 0.8689
+
+El modelo presenta un rendimiento **bueno**, ya que el valor de R² indica que explica aproximadamente el 86.89% de la variabilidad del precio.
+
+Además, al compararlo con un modelo baseline basado en la media, se observa una mejora significativa en los errores:
+
+* MAE baseline: 6103.92
+* RMSE baseline: 8952.05
+
+Esto indica que el modelo es capaz de capturar relaciones relevantes entre las variables.
+
+Por otro lado, los residuos presentan una media cercana a cero, lo que sugiere que no existe un sesgo sistemático en las predicciones.
+
+---
+
+# 🔴 Ejercicio 3 — Regresión Lineal Múltiple en NumPy
+
+## Pregunta 3.1 — Explica en tus propias palabras qué hace la fórmula β = (XᵀX)⁻¹ Xᵀy y por qué es necesario añadir una columna de unos a la matriz X.
+
+La fórmula β = (XᵀX)⁻¹ Xᵀy permite calcular los coeficientes óptimos de una regresión lineal minimizando el error cuadrático entre las predicciones y los valores reales.
+
+En esencia, esta expresión encuentra los parámetros que mejor ajustan un modelo lineal a los datos disponibles.
+
+Es necesario añadir una columna de unos a la matriz X para poder estimar el término independiente del modelo (β₀), que representa el valor base de la variable objetivo cuando el resto de variables son cero.
+
+---
+
+## Pregunta 3.2 — Copia aquí los cuatro coeficientes ajustados por tu función y compáralos con los valores de referencia del enunciado.
+
+Los coeficientes obtenidos son:
+
+* β₀ ≈ 5.0579 (real: 5.0)
+* β₁ ≈ 2.0177 (real: 2.0)
+* β₂ ≈ -1.1490 (real: -1.0)
+* β₃ ≈ 0.4607 (real: 0.5)
+
+El error medio en los coeficientes es aproximadamente 0.066, lo que indica que el modelo ha sido capaz de estimar correctamente los valores reales.
+
+Las pequeñas diferencias se deben al ruido introducido en los datos.
+
+---
+
+## Pregunta 3.3 — ¿Qué valores de MAE, RMSE y R² has obtenido? ¿Se aproximan a los de referencia?
+
+El modelo ha obtenido:
+
+* MAE: 0.4027
+* RMSE: 0.5058
+* R²: 0.6387
+
+Los errores MAE y RMSE son bajos, lo que indica que las predicciones son precisas.
+
+El valor de R² es moderadamente alto, lo que indica que el modelo explica una parte significativa de la variabilidad de los datos.
+
+En conjunto, los resultados son buenos y se aproximan a los valores esperados, teniendo en cuenta la presencia de ruido.
+
+---
+
+# 🟣 Ejercicio 4 — Series Temporales
+
+## Pregunta 4.1 — ¿La serie presenta tendencia? Descríbela brevemente (tipo, dirección, magnitud aproximada).
+
+La serie presenta una tendencia creciente aproximadamente lineal, con una pendiente cercana a 0.05, lo que indica un incremento progresivo de los valores a lo largo del tiempo.
+
+---
+
+## Pregunta 4.2 — ¿Hay estacionalidad? Indica el periodo aproximado en días y la amplitud del patrón estacional.
+
+La serie presenta estacionalidad con un periodo aproximado de 365 días, correspondiente a un patrón anual.
+
+La amplitud del patrón estacional es de aproximadamente 31.83, lo que indica variaciones periódicas significativas alrededor de la tendencia.
+
+---
+
+## Pregunta 4.3 — ¿Se aprecian ciclos de largo plazo en la serie? ¿Cómo los diferencias de la tendencia?
+
+No se observan ciclos de largo plazo claramente diferenciados.
+
+La autocorrelación muestra dependencia a corto plazo, pero no existen patrones cíclicos prolongados más allá de la estacionalidad.
+
+Los ciclos se diferencian de la tendencia en que no siguen una dirección continua, sino que representan fluctuaciones irregulares, lo cual no se aprecia en esta serie.
+
+---
+
+## Pregunta 4.4 — ¿El residuo se ajusta a un ruido ideal? Indica la media, la desviación típica y el resultado del test de normalidad (p-value) para justificar tu respuesta.
+
+El residuo presenta una media cercana a cero (-0.045) y una desviación típica baja (0.068), lo que indica ausencia de sesgo y baja variabilidad.
+
+El test de normalidad arroja un p-value de 1.84e-42, lo que indica que no se puede asumir normalidad estricta.
+
+No obstante, el residuo se comporta de forma cercana a un ruido aleatorio, por lo que el modelo resulta adecuado para describir la serie.
+
+---
