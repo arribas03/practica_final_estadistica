@@ -2,7 +2,7 @@
 Pendiente: 0.04955683480095868
 
 === ESTACIONALIDAD ===
-Periodo: 365 dias
+Periodo: 365 días
 Amplitud: 31.83384227665139
 
 === RESIDUOS ===

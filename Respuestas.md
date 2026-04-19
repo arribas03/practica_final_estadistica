@@ -113,38 +113,62 @@ En conjunto, los resultados son buenos y se aproximan a los valores esperados, t
 
 ---
 
-# 🟣 Ejercicio 4 — Series Temporales
+# Ejercicio 4 — Series Temporales
 
-## Pregunta 4.1 — ¿La serie presenta tendencia? Descríbela brevemente (tipo, dirección, magnitud aproximada).
+## ¿La serie presenta tendencia? ¿De qué tipo?
 
-La serie presenta una tendencia creciente aproximadamente lineal, con una pendiente cercana a 0.05, lo que indica un incremento progresivo de los valores a lo largo del tiempo.
+La serie presenta una **tendencia creciente de tipo aproximadamente lineal**.
 
----
-
-## Pregunta 4.2 — ¿Hay estacionalidad? Indica el periodo aproximado en días y la amplitud del patrón estacional.
-
-La serie presenta estacionalidad con un periodo aproximado de 365 días, correspondiente a un patrón anual.
-
-La amplitud del patrón estacional es de aproximadamente 31.83, lo que indica variaciones periódicas significativas alrededor de la tendencia.
+Esto se observa en la pendiente estimada de la componente de tendencia, que es aproximadamente **0.0496**, lo que indica un incremento progresivo y constante de los valores a lo largo del tiempo.
 
 ---
 
-## Pregunta 4.3 — ¿Se aprecian ciclos de largo plazo en la serie? ¿Cómo los diferencias de la tendencia?
+## ¿Hay estacionalidad? ¿Cuál es el periodo aproximado y la amplitud?
+
+Sí, la serie presenta una **estacionalidad clara**.
+
+* **Periodo aproximado:** 365 días (patrón anual)
+* **Amplitud:** aproximadamente **31.83**
+
+Esto indica que la serie experimenta fluctuaciones periódicas regulares a lo largo del año, con variaciones significativas alrededor de la tendencia.
+
+---
+
+## ¿Se aprecian ciclos de largo plazo? ¿Cómo los distingues de la tendencia?
 
 No se observan ciclos de largo plazo claramente diferenciados.
 
-La autocorrelación muestra dependencia a corto plazo, pero no existen patrones cíclicos prolongados más allá de la estacionalidad.
+El análisis de autocorrelación muestra valores altos únicamente en lags pequeños (corto plazo), lo que indica dependencia temporal inmediata, pero no la existencia de patrones cíclicos prolongados.
 
-Los ciclos se diferencian de la tendencia en que no siguen una dirección continua, sino que representan fluctuaciones irregulares, lo cual no se aprecia en esta serie.
+Los ciclos se diferencian de la tendencia en que:
+
+* la **tendencia** representa un cambio sistemático y continuo (en este caso creciente)
+* los **ciclos** serían fluctuaciones irregulares de largo plazo sin periodicidad fija
+
+En esta serie, la variación se explica principalmente por la tendencia y la estacionalidad, sin evidencia de ciclos adicionales.
+
+---
+
+## ¿Hay ruido? ¿Cuánto (en términos de desviación típica del residuo)?
+
+Sí, la serie presenta un componente de ruido.
+
+* **Media del residuo:** -0.045 (aproximadamente 0)
+* **Desviación típica:** 0.068
+
+La baja desviación típica indica que el ruido tiene una variabilidad reducida en comparación con la señal principal, por lo que no afecta significativamente a la estructura de la serie.
 
 ---
 
-## Pregunta 4.4 — ¿El residuo se ajusta a un ruido ideal? Indica la media, la desviación típica y el resultado del test de normalidad (p-value) para justificar tu respuesta.
+## ¿El ruido se ajusta a un ruido ideal (gaussiano, media ≈ 0, sin autocorrelación)? Justifica con los resultados de los tests.
 
-El residuo presenta una media cercana a cero (-0.045) y una desviación típica baja (0.068), lo que indica ausencia de sesgo y baja variabilidad.
+El residuo presenta características cercanas a un ruido ideal, aunque no cumple completamente todas las condiciones.
 
-El test de normalidad arroja un p-value de 1.84e-42, lo que indica que no se puede asumir normalidad estricta.
+* La **media es cercana a cero**, lo que indica ausencia de sesgo
+* La **desviación típica es baja**, lo que indica baja dispersión
+* Sin embargo, el test de normalidad arroja un **p-value ≈ 1.84e-42**, lo que indica que **no se puede asumir normalidad estricta**
 
-No obstante, el residuo se comporta de forma cercana a un ruido aleatorio, por lo que el modelo resulta adecuado para describir la serie.
+A pesar de ello, el comportamiento general del residuo es consistente con un ruido aleatorio, por lo que se considera adecuado para el análisis de la serie.
 
 ---
+
