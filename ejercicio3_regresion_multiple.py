@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import os
 
 # ================================
@@ -9,23 +10,19 @@ np.random.seed(42)
 os.makedirs("data/output", exist_ok=True)
 
 # ================================
-# 2. GENERAR DATOS (MEJORADOS)
+# 2. GENERAR DATOS
 # ================================
 
-n = 200  # más datos → mejor R2
+n = 200
 
 X = np.random.rand(n, 3)
 
-# Coeficientes reales
 beta_real = np.array([5, 2, -1, 0.5])
 
-# Añadir columna de unos (intercepto)
 X_b = np.c_[np.ones((n, 1)), X]
 
-# Ruido más pequeño → modelo más estable
 ruido = np.random.randn(n) * 0.5
 
-# Variable objetivo
 y = X_b @ beta_real + ruido
 
 # ================================
@@ -39,19 +36,16 @@ for i, b in enumerate(beta_estimado):
     print(f"beta{i}: {b:.4f}")
 
 # ================================
-# 4. COMPARACIÓN CON VALORES REALES
+# 4. COMPARACIÓN
 # ================================
 
-print("\n=== COMPARACIÓN ===")
 errores = []
 
+print("\n=== COMPARACIÓN ===")
 for i in range(len(beta_real)):
     error = abs(beta_real[i] - beta_estimado[i])
     errores.append(error)
-    
     print(f"beta{i} real: {beta_real[i]} | estimado: {beta_estimado[i]:.4f} | error: {error:.4f}")
-
-print("\nError medio en coeficientes:", np.mean(errores))
 
 # ================================
 # 5. PREDICCIONES
@@ -73,35 +67,36 @@ print(f"RMSE: {rmse:.4f}")
 print(f"R2: {r2:.4f}")
 
 # ================================
-# 7. INTERPRETACIÓN AUTOMÁTICA
+# 7. SCATTER PLOT (OBLIGATORIO)
 # ================================
 
-if r2 > 0.8:
-    calidad = "muy bueno"
-elif r2 > 0.6:
-    calidad = "bueno"
-else:
-    calidad = "mejorable"
+plt.figure(figsize=(6,6))
+plt.scatter(y, y_pred)
+plt.xlabel("Valores reales")
+plt.ylabel("Valores predichos")
+plt.title("Predicciones vs Reales")
 
-print("\n=== INTERPRETACIÓN ===")
-print(f"El modelo tiene un ajuste {calidad}.")
-print("Los coeficientes estimados son cercanos a los valores reales.")
-print("Las diferencias se deben al ruido en los datos.")
+# línea perfecta
+plt.plot([y.min(), y.max()], [y.min(), y.max()], color='red')
+
+plt.tight_layout()
+plt.savefig("data/output/ej3_predicciones.png")
+plt.close()
 
 # ================================
-# 8. GUARDAR RESULTADOS (SIN ERROR)
+# 8. GUARDAR COEFICIENTES
 # ================================
 
-with open("data/output/ej3_resultados.txt", "w", encoding="utf-8") as f:
-    f.write("=== COEFICIENTES ===\n")
-    for i, b in enumerate(beta_estimado):
-        f.write(f"beta{i}: {b}\n")
-
-    f.write("\n=== COMPARACIÓN ===\n")
+with open("data/output/ej3_coeficientes.txt", "w") as f:
+    f.write("Coeficientes reales vs estimados\n\n")
     for i in range(len(beta_real)):
         f.write(f"beta{i} real: {beta_real[i]} | estimado: {beta_estimado[i]}\n")
 
-    f.write("\n=== MÉTRICAS ===\n")
+# ================================
+# 9. GUARDAR MÉTRICAS
+# ================================
+
+with open("data/output/ej3_metricas.txt", "w") as f:
     f.write(f"MAE: {mae}\n")
     f.write(f"RMSE: {rmse}\n")
     f.write(f"R2: {r2}\n")
