@@ -8,7 +8,8 @@ import os
 # 1. CONFIGURACIÓN
 # ================================
 
-# Cargar dataset
+os.makedirs("data/output", exist_ok=True)
+
 df = pd.read_csv("data/car_price.csv")
 
 # ================================
@@ -28,7 +29,7 @@ desc = df.describe()
 desc.to_csv("data/output/ej1_descriptivo.csv")
 
 # ================================
-# 4. HISTOGRAMAS
+# 4. HISTOGRAMAS (UNO SOLO)
 # ================================
 
 df.hist(figsize=(15,10))
@@ -37,32 +38,42 @@ plt.savefig("data/output/ej1_histogramas.png")
 plt.close()
 
 # ================================
-# 5. VARIABLES CATEGÓRICAS
+# 5. VARIABLES CATEGÓRICAS (UNA FIGURA)
 # ================================
 
 categorical_cols = df.select_dtypes(include=['object']).columns
 
-for col in categorical_cols:
-    plt.figure(figsize=(6,4))
+n_cols = 2
+n_rows = int(np.ceil(len(categorical_cols) / n_cols))
+
+plt.figure(figsize=(12, n_rows * 4))
+
+for i, col in enumerate(categorical_cols):
+    plt.subplot(n_rows, n_cols, i + 1)
     df[col].value_counts().plot(kind='bar')
     plt.title(col)
-    plt.tight_layout()
-    plt.savefig(f"data/output/ej1_categorica_{col}.png")
-    plt.close()
+
+plt.tight_layout()
+plt.savefig("data/output/ej1_categoricas.png")
+plt.close()
 
 # ================================
-# 6. BOXPLOTS (TARGET VS CATEGÓRICAS)
+# 6. BOXPLOTS (UNA FIGURA)
 # ================================
 
 target = "price"
 
-for col in categorical_cols:
-    plt.figure(figsize=(6,4))
+plt.figure(figsize=(12, n_rows * 4))
+
+for i, col in enumerate(categorical_cols):
+    plt.subplot(n_rows, n_cols, i + 1)
     sns.boxplot(x=df[col], y=df[target])
     plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(f"data/output/ej1_boxplot_{col}.png")
-    plt.close()
+    plt.title(col)
+
+plt.tight_layout()
+plt.savefig("data/output/ej1_boxplots.png")
+plt.close()
 
 # ================================
 # 7. CORRELACIONES
@@ -77,7 +88,7 @@ plt.savefig("data/output/ej1_heatmap_correlacion.png")
 plt.close()
 
 # ================================
-# 8. TOP CORRELACIONES CON TARGET
+# 8. TOP CORRELACIONES
 # ================================
 
 corr_target = corr[target].abs().sort_values(ascending=False)
@@ -85,7 +96,7 @@ print("\n=== CORRELACIÓN CON TARGET ===")
 print(corr_target)
 
 # ================================
-# 9. DETECCIÓN DE OUTLIERS (IQR)
+# 9. OUTLIERS (TARGET)
 # ================================
 
 Q1 = df[target].quantile(0.25)
@@ -100,7 +111,7 @@ outliers = df[(df[target] < lower) | (df[target] > upper)]
 print("\nNúmero de outliers en price:", len(outliers))
 
 # ================================
-# 10. OUTLIERS POR VARIABLE 
+# 10. OUTLIERS POR VARIABLE
 # ================================
 
 for col in df.select_dtypes(include=np.number).columns:
@@ -111,9 +122,8 @@ for col in df.select_dtypes(include=np.number).columns:
     
     print(f"{col}: {len(outliers_col)} outliers")
 
-
 # ================================
-# 11. ANÁLISIS DE VALORES NULOS
+# 11. NULOS
 # ================================
 
 null_counts = df.isnull().sum()
@@ -122,6 +132,6 @@ null_percentage = (null_counts / len(df)) * 100
 
 print("\n=== ANÁLISIS DE NULOS ===")
 print("\nNulos por columna:\n", null_counts)
-print("\nPorcentaje de nulos por columna (%):\n", null_percentage)
-print("\nTotal de nulos en el dataset:", total_nulls)
-print("Porcentaje total de nulos:", (total_nulls / (df.shape[0] * df.shape[1])) * 100, "%")
+print("\nPorcentaje (%):\n", null_percentage)
+print("\nTotal nulos:", total_nulls)
+print("Porcentaje total:", (total_nulls / (df.shape[0] * df.shape[1])) * 100)
